@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 1040" width="800" height="1040" role="img" aria-label="Identity Document">
+  <rect width="800" height="1040" fill="#f8fafc"/>
+  <rect x="40" y="40" width="720" height="960" rx="8" fill="#ffffff" stroke="#e2e8f0" stroke-width="2"/>
+  <rect x="40" y="40" width="720" height="10" rx="4" fill="#334155"/>
+
+  <text x="400" y="130" fill="#0f172a" font-family="Georgia, serif" font-size="34" font-weight="700" text-anchor="middle">Identity Document</text>
+  <text x="400" y="168" fill="#64748b" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="17" text-anchor="middle">Verified student identity record</text>
+  <line x1="200" y1="196" x2="600" y2="196" stroke="#334155" stroke-width="2"/>
+
+  <circle cx="400" cy="290" r="52" fill="#334155" fill-opacity="0.12"/>
+  <text x="400" y="290" font-size="44" text-anchor="middle" dominant-baseline="central">&#128196;</text>
+
+  <rect x="120" y="390" width="560" height="14" rx="7" fill="#e2e8f0"/>
+  <rect x="120" y="428" width="480" height="14" rx="7" fill="#e2e8f0"/>
+  <rect x="120" y="466" width="520" height="14" rx="7" fill="#e2e8f0"/>
+  <rect x="120" y="504" width="380" height="14" rx="7" fill="#e2e8f0"/>
+
+  <rect x="120" y="570" width="260" height="14" rx="7" fill="#cbd5e1"/>
+  <rect x="120" y="608" width="560" height="14" rx="7" fill="#e2e8f0"/>
+  <rect x="120" y="646" width="500" height="14" rx="7" fill="#e2e8f0"/>
+  <rect x="120" y="684" width="430" height="14" rx="7" fill="#e2e8f0"/>
+
+  <line x1="120" y1="800" x2="320" y2="800" stroke="#94a3b8" stroke-width="2"/>
+  <text x="120" y="826" fill="#64748b" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="14">Authorised signatory</text>
+  <line x1="480" y1="800" x2="680" y2="800" stroke="#94a3b8" stroke-width="2"/>
+  <text x="480" y="826" fill="#64748b" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="14">Date of issue</text>
+
+  <rect x="120" y="900" width="560" height="56" rx="6" fill="#fef3c7" stroke="#fcd34d" stroke-width="1.5"/>
+  <text x="400" y="928" fill="#92400e" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="14" font-weight="600" text-anchor="middle">SAMPLE DOCUMENT - SPAM demo data</text>
+  <text x="400" y="948" fill="#b45309" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="12" text-anchor="middle">Not a real certificate. Generated for demonstration purposes only.</text>
+</svg>

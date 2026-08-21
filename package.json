@@ -1,0 +1,21 @@
+{
+  "name": "spam-project",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Student Portfolio & Achievement Management System - Full Stack",
+  "scripts": {
+    "start": "npm --prefix Frontend run dev",
+    "dev": "npm --prefix Frontend run dev",
+    "build": "npm --prefix Frontend run build",
+    "preview": "npm --prefix Frontend run preview",
+    "lint": "npm --prefix Frontend run lint",
+    "install:all": "npm install && npm --prefix Frontend install && npm --prefix SPAM_Backend install",
+    "start:frontend": "npm --prefix Frontend run dev",
+    "start:backend": "npm --prefix SPAM_Backend run dev",
+    "start:all": "concurrently \"npm run start:backend\" \"npm run start:frontend\" --names \"BACKEND,FRONTEND\" --prefix-colors \"magenta,blue\"",
+    "build:frontend": "npm --prefix Frontend run build"
+  },
+  "devDependencies": {
+    "concurrently": "^8.2.2"
+  }
+}

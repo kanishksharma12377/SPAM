@@ -1,0 +1,508 @@
+/**
+ * Seed data for the demo (no-database) mode.
+ *
+ * Shapes here intentionally mirror the Mongoose models in SPAM_Backend/model/
+ * so that swapping the mock layer out for the real API needs no page changes:
+ *   - logins[]        -> loginModel.js   (student credentials + role tuple)
+ *   - admins[]        -> adminModel.js
+ *   - students[]      -> studentModel.js (the full portfolio record)
+ *   - verifications[] -> verifyModel.js  (upload / approval requests)
+ *   - notices[]       -> noticeModel.js
+ *   - logs[]          -> logsModel.js
+ */
+
+// Credentials surfaced on the login screen in demo mode.
+export const DEMO_CREDENTIALS = {
+  admin: { username: 'admin', password: 'admin123' },
+  student: { username: 'scs0001', password: 'student123' },
+};
+
+const STUDENT_PASSWORD = 'student123';
+const ADMIN_PASSWORD = 'admin123';
+
+const DAY = 24 * 60 * 60 * 1000;
+const daysAgo = (n) => new Date(Date.now() - n * DAY).toISOString();
+const daysAhead = (n) => new Date(Date.now() + n * DAY).toISOString();
+
+/**
+ * Built fresh on every seed so notice expiry dates stay relative to "now" --
+ * otherwise a demo left running for a week would show zero active notices.
+ */
+export function buildSeedData() {
+  return {
+    admins: [
+      {
+        a_id: 'adm0001',
+        name: 'Dr. Rajesh Menon',
+        contact: '9876500011',
+        gmail: 'rajesh.menon@gmail.com',
+        image: '/demo/avatars/admin.svg',
+        username: 'admin',
+        password: ADMIN_PASSWORD,
+        role: 'admin',
+      },
+    ],
+
+    logins: [
+      { s_id: 'scs0001', name: 'Aarav Sharma',   username: 'scs0001', password: STUDENT_PASSWORD, role: ['student', 'scs0001', '3yr', 'cs', 'skilled'] },
+      { s_id: 'scs0002', name: 'Diya Patel',     username: 'scs0002', password: STUDENT_PASSWORD, role: ['student', 'scs0002', '2yr', 'cs', 'skilled'] },
+      { s_id: 'sce0003', name: 'Rohan Verma',    username: 'sce0003', password: STUDENT_PASSWORD, role: ['student', 'sce0003', '4yr', 'ce', 'none'] },
+      { s_id: 'sme0004', name: 'Ananya Iyer',    username: 'sme0004', password: STUDENT_PASSWORD, role: ['student', 'sme0004', '1yr', 'me', 'none'] },
+      { s_id: 'see0005', name: 'Kabir Nair',     username: 'see0005', password: STUDENT_PASSWORD, role: ['student', 'see0005', '3yr', 'ee', 'skilled'] },
+      { s_id: 'scs0006', name: 'Meera Krishnan', username: 'scs0006', password: STUDENT_PASSWORD, role: ['student', 'scs0006', '2yr', 'cs', 'none'] },
+      { s_id: 'sce0007', name: 'Vivaan Reddy',   username: 'sce0007', password: STUDENT_PASSWORD, role: ['student', 'sce0007', '1yr', 'ce', 'none'] },
+      { s_id: 'sme0008', name: 'Ishaan Gupta',   username: 'sme0008', password: STUDENT_PASSWORD, role: ['student', 'sme0008', '4yr', 'me', 'skilled'] },
+    ],
+
+    // scs0006 and sce0007 deliberately have NO record below: signing in as
+    // either one exercises the "profile setup pending" flow.
+    students: [
+      {
+        s_id: 'scs0001',
+        name: { firstName: 'Aarav', middleName: 'Rajeev', lastName: 'Sharma' },
+        fatherName: 'Rajeev Sharma',
+        motherName: 'Sunita Sharma',
+        dob: '2004-03-14T00:00:00.000Z',
+        age: 21,
+        gender: 'male',
+        category: 'gen',
+        bloodGroup: 'B+',
+        nationality: 'Indian',
+        religion: 'Hindu',
+        image: '/demo/avatars/scs0001.svg',
+        gmail: 'aarav.sharma04@gmail.com',
+        contact: '9876543210',
+        address: { locality: 'Sector 21', city: 'Indore', district: 'Indore', state: 'Madhya Pradesh', pincode: '452001' },
+        class: '3yr',
+        branch: 'cs',
+        points: 420,
+        profile: 'Third-year Computer Science student focused on full-stack web development and applied machine learning. Enjoys building tools that make campus life easier.',
+        socialAccount: [
+          { name: 'github', link: 'https://github.com/aarav-sharma' },
+          { name: 'linkedin', link: 'https://linkedin.com/in/aarav-sharma' },
+        ],
+        document: [
+          { name: 'aadhaar', doc_no: 'xxxx-xxxx-4821', image: '/demo/proofs/document.svg' },
+          { name: 'college id', doc_no: 'scs0001', image: '/demo/proofs/document.svg' },
+        ],
+        skills: [
+          { v_id: '1001', name: 'react', topic: ['hooks', 'context api', 'react router'] },
+          { v_id: '1002', name: 'node.js', topic: ['express', 'rest apis', 'jwt auth'] },
+          { v_id: '1003', name: 'mongodb', topic: ['aggregation', 'indexing', 'mongoose'] },
+        ],
+        result: [
+          { v_id: '1004', name: 'semester 4', r_no: 'cs21-0041', score: '8.6 cgpa', image: '/demo/proofs/marksheet.svg' },
+          { v_id: '1005', name: 'semester 5', r_no: 'cs21-0041', score: '8.9 cgpa', image: '/demo/proofs/marksheet.svg' },
+        ],
+        certificate: [
+          { v_id: '1006', name: 'aws cloud practitioner', c_id: 'aws-ccp-88213', image: '/demo/proofs/certificate.svg' },
+          { v_id: '1007', name: 'meta front-end developer', c_id: 'cour-4471290', image: '/demo/proofs/certificate.svg' },
+        ],
+        project: [
+          {
+            v_id: '1008',
+            name: 'campus mess feedback portal',
+            description: 'A MERN application that lets hostel residents rate daily meals and gives the mess committee a weekly analytics digest.',
+            technology: ['react', 'express', 'mongodb', 'tailwind'],
+            image: '/demo/proofs/project.svg',
+            link: 'https://github.com/aarav-sharma/mess-feedback',
+          },
+          {
+            v_id: '1009',
+            name: 'attendance ocr scanner',
+            description: 'Reads scanned attendance sheets and converts them to a spreadsheet using Tesseract OCR plus a small correction model.',
+            technology: ['python', 'opencv', 'tesseract'],
+            image: '/demo/proofs/project.svg',
+            link: 'https://github.com/aarav-sharma/attendance-ocr',
+          },
+        ],
+        internship: [
+          { v_id: '1010', company: 'zeta infotech', field: 'full stack development', duration: 3, certificate_image: '/demo/proofs/internship.svg' },
+        ],
+      },
+
+      {
+        s_id: 'scs0002',
+        name: { firstName: 'Diya', middleName: '', lastName: 'Patel' },
+        fatherName: 'Nikhil Patel',
+        motherName: 'Reema Patel',
+        dob: '2005-07-02T00:00:00.000Z',
+        age: 20,
+        gender: 'female',
+        category: 'obc',
+        bloodGroup: 'O+',
+        nationality: 'Indian',
+        religion: 'Hindu',
+        image: '/demo/avatars/scs0002.svg',
+        gmail: 'diya.patel05@gmail.com',
+        contact: '9812345678',
+        address: { locality: 'Vastrapur', city: 'Ahmedabad', district: 'Ahmedabad', state: 'Gujarat', pincode: '380015' },
+        class: '2yr',
+        branch: 'cs',
+        points: 285,
+        profile: 'Second-year CS student interested in data visualisation and competitive programming. Campus lead for the coding club.',
+        socialAccount: [
+          { name: 'github', link: 'https://github.com/diya-patel' },
+          { name: 'leetcode', link: 'https://leetcode.com/diya-patel' },
+        ],
+        document: [{ name: 'college id', doc_no: 'scs0002', image: '/demo/proofs/document.svg' }],
+        skills: [
+          { v_id: '1011', name: 'python', topic: ['pandas', 'numpy', 'matplotlib'] },
+          { v_id: '1012', name: 'data structures', topic: ['graphs', 'dynamic programming'] },
+        ],
+        result: [{ v_id: '1013', name: 'semester 3', r_no: 'cs22-0118', score: '9.1 cgpa', image: '/demo/proofs/marksheet.svg' }],
+        certificate: [{ v_id: '1014', name: 'google data analytics', c_id: 'cour-9930142', image: '/demo/proofs/certificate.svg' }],
+        project: [
+          {
+            v_id: '1015',
+            name: 'placement stats dashboard',
+            description: 'Interactive dashboard summarising five years of departmental placement data with branch-wise filters.',
+            technology: ['react', 'd3', 'python'],
+            image: '/demo/proofs/project.svg',
+            link: 'https://github.com/diya-patel/placement-dashboard',
+          },
+        ],
+        internship: [],
+      },
+
+      {
+        s_id: 'sce0003',
+        name: { firstName: 'Rohan', middleName: 'Anil', lastName: 'Verma' },
+        fatherName: 'Anil Verma',
+        motherName: 'Kavita Verma',
+        dob: '2003-11-23T00:00:00.000Z',
+        age: 22,
+        gender: 'male',
+        category: 'gen',
+        bloodGroup: 'A+',
+        nationality: 'Indian',
+        religion: 'Hindu',
+        image: '/demo/avatars/sce0003.svg',
+        gmail: 'rohan.verma03@gmail.com',
+        contact: '9765432180',
+        address: { locality: 'Civil Lines', city: 'Jaipur', district: 'Jaipur', state: 'Rajasthan', pincode: '302006' },
+        class: '4yr',
+        branch: 'ce',
+        points: 510,
+        profile: 'Final-year Computer Engineering student specialising in embedded systems and IoT. Currently preparing for GATE.',
+        socialAccount: [{ name: 'linkedin', link: 'https://linkedin.com/in/rohan-verma-ce' }],
+        document: [{ name: 'college id', doc_no: 'sce0003', image: '/demo/proofs/document.svg' }],
+        skills: [
+          { v_id: '1016', name: 'embedded c', topic: ['arm cortex', 'rtos'] },
+          { v_id: '1017', name: 'iot', topic: ['mqtt', 'esp32', 'sensor networks'] },
+        ],
+        result: [
+          { v_id: '1018', name: 'semester 6', r_no: 'ce20-0073', score: '8.2 cgpa', image: '/demo/proofs/marksheet.svg' },
+          { v_id: '1019', name: 'semester 7', r_no: 'ce20-0073', score: '8.4 cgpa', image: '/demo/proofs/marksheet.svg' },
+        ],
+        certificate: [{ v_id: '1020', name: 'nptel embedded systems', c_id: 'nptel-ee-2213', image: '/demo/proofs/certificate.svg' }],
+        project: [
+          {
+            v_id: '1021',
+            name: 'smart water tank monitor',
+            description: 'ESP32-based ultrasonic level sensor that publishes tank levels over MQTT and warns the hostel warden before a dry run.',
+            technology: ['esp32', 'mqtt', 'node-red'],
+            image: '/demo/proofs/project.svg',
+            link: 'https://github.com/rohan-verma/water-tank-monitor',
+          },
+        ],
+        internship: [
+          { v_id: '1022', company: 'bharat electronics', field: 'embedded firmware', duration: 6, certificate_image: '/demo/proofs/internship.svg' },
+        ],
+      },
+
+      {
+        s_id: 'sme0004',
+        name: { firstName: 'Ananya', middleName: '', lastName: 'Iyer' },
+        fatherName: 'Suresh Iyer',
+        motherName: 'Lakshmi Iyer',
+        dob: '2006-01-09T00:00:00.000Z',
+        age: 19,
+        gender: 'female',
+        category: 'gen',
+        bloodGroup: 'AB+',
+        nationality: 'Indian',
+        religion: 'Hindu',
+        image: '/demo/avatars/sme0004.svg',
+        gmail: 'ananya.iyer06@gmail.com',
+        contact: '9701122334',
+        address: { locality: 'Adyar', city: 'Chennai', district: 'Chennai', state: 'Tamil Nadu', pincode: '600020' },
+        class: '1yr',
+        branch: 'me',
+        points: 95,
+        profile: 'First-year Mechanical Engineering student exploring CAD and motorsport engineering.',
+        socialAccount: [],
+        document: [{ name: 'college id', doc_no: 'sme0004', image: '/demo/proofs/document.svg' }],
+        skills: [{ v_id: '1023', name: 'autocad', topic: ['2d drafting', 'isometric views'] }],
+        result: [{ v_id: '1024', name: 'semester 1', r_no: 'me24-0210', score: '7.8 cgpa', image: '/demo/proofs/marksheet.svg' }],
+        certificate: [],
+        project: [],
+        internship: [],
+      },
+
+      {
+        s_id: 'see0005',
+        name: { firstName: 'Kabir', middleName: '', lastName: 'Nair' },
+        fatherName: 'Deepak Nair',
+        motherName: 'Anita Nair',
+        dob: '2004-05-30T00:00:00.000Z',
+        age: 21,
+        gender: 'male',
+        category: 'sc',
+        bloodGroup: 'O-',
+        nationality: 'Indian',
+        religion: 'Hindu',
+        image: '/demo/avatars/see0005.svg',
+        gmail: 'kabir.nair04@gmail.com',
+        contact: '9845001122',
+        address: { locality: 'Panampilly Nagar', city: 'Kochi', district: 'Ernakulam', state: 'Kerala', pincode: '682036' },
+        class: '3yr',
+        branch: 'ee',
+        points: 340,
+        profile: 'Electrical Engineering student working on renewable energy and power electronics. Volunteers with the campus solar initiative.',
+        socialAccount: [{ name: 'github', link: 'https://github.com/kabir-nair' }],
+        document: [{ name: 'college id', doc_no: 'see0005', image: '/demo/proofs/document.svg' }],
+        skills: [
+          { v_id: '1025', name: 'matlab', topic: ['simulink', 'signal processing'] },
+          { v_id: '1026', name: 'power electronics', topic: ['inverters', 'mppt'] },
+        ],
+        result: [{ v_id: '1027', name: 'semester 5', r_no: 'ee21-0155', score: '8.0 cgpa', image: '/demo/proofs/marksheet.svg' }],
+        certificate: [{ v_id: '1028', name: 'nptel renewable energy', c_id: 'nptel-ee-4419', image: '/demo/proofs/certificate.svg' }],
+        project: [
+          {
+            v_id: '1029',
+            name: 'solar mppt charge controller',
+            description: 'A perturb-and-observe MPPT controller prototype that improved panel yield by roughly 18% over a fixed-duty design.',
+            technology: ['matlab', 'simulink', 'arduino'],
+            image: '/demo/proofs/project.svg',
+            link: 'https://github.com/kabir-nair/mppt-controller',
+          },
+        ],
+        internship: [
+          { v_id: '1030', company: 'kseb', field: 'power distribution', duration: 2, certificate_image: '/demo/proofs/internship.svg' },
+        ],
+      },
+
+      {
+        s_id: 'sme0008',
+        name: { firstName: 'Ishaan', middleName: '', lastName: 'Gupta' },
+        fatherName: 'Manoj Gupta',
+        motherName: 'Priya Gupta',
+        dob: '2003-09-17T00:00:00.000Z',
+        age: 22,
+        gender: 'male',
+        category: 'obc',
+        bloodGroup: 'B-',
+        nationality: 'Indian',
+        religion: 'Hindu',
+        image: '/demo/avatars/sme0008.svg',
+        gmail: 'ishaan.gupta03@gmail.com',
+        contact: '9911223344',
+        address: { locality: 'Gomti Nagar', city: 'Lucknow', district: 'Lucknow', state: 'Uttar Pradesh', pincode: '226010' },
+        class: '4yr',
+        branch: 'me',
+        points: 465,
+        profile: 'Final-year Mechanical Engineering student with a focus on thermal systems and additive manufacturing.',
+        socialAccount: [{ name: 'linkedin', link: 'https://linkedin.com/in/ishaan-gupta-me' }],
+        document: [{ name: 'college id', doc_no: 'sme0008', image: '/demo/proofs/document.svg' }],
+        skills: [
+          { v_id: '1031', name: 'solidworks', topic: ['sheet metal', 'assemblies'] },
+          { v_id: '1032', name: 'ansys', topic: ['thermal analysis', 'cfd'] },
+        ],
+        result: [{ v_id: '1033', name: 'semester 7', r_no: 'me20-0034', score: '8.7 cgpa', image: '/demo/proofs/marksheet.svg' }],
+        certificate: [{ v_id: '1034', name: 'certified solidworks associate', c_id: 'cswa-771203', image: '/demo/proofs/certificate.svg' }],
+        project: [
+          {
+            v_id: '1035',
+            name: '3d printed heat sink study',
+            description: 'Comparative CFD and bench study of lattice versus finned heat sink geometries produced on an FDM printer.',
+            technology: ['solidworks', 'ansys fluent'],
+            image: '/demo/proofs/project.svg',
+            link: 'https://github.com/ishaan-gupta/heatsink-study',
+          },
+        ],
+        internship: [
+          { v_id: '1036', company: 'tata motors', field: 'thermal systems', duration: 6, certificate_image: '/demo/proofs/internship.svg' },
+        ],
+      },
+    ],
+
+    verifications: [
+      {
+        v_id: 2001,
+        s_id: 'scs0001',
+        category: 'certificate',
+        body: { name: 'google cloud associate engineer', c_id: 'gcp-ace-55120', description: 'Cleared the associate cloud engineer exam.', date: daysAgo(9).slice(0, 10) },
+        message: 'Cleared the associate cloud engineer exam last week.',
+        proof: '/demo/proofs/certificate.svg',
+        status: 'pending',
+        feedback: '',
+        creation_date: daysAgo(3),
+      },
+      {
+        v_id: 2002,
+        s_id: 'scs0001',
+        category: 'project',
+        body: { name: 'library seat availability tracker', description: 'Realtime seat occupancy map for the central library using ESP32 presence sensors.', technology: ['react', 'websockets', 'esp32'], link: 'https://github.com/aarav-sharma/library-tracker', date: daysAgo(20).slice(0, 10) },
+        message: 'Demoed at the departmental project expo.',
+        proof: '/demo/proofs/project.svg',
+        status: 'accepted',
+        feedback: 'Verified against the expo entry list. Nicely documented.',
+        creation_date: daysAgo(18),
+      },
+      {
+        v_id: 2003,
+        s_id: 'scs0002',
+        category: 'skills',
+        body: { name: 'tableau', topics: ['calculated fields', 'dashboards'], description: 'Completed the Tableau fundamentals track.', date: daysAgo(12).slice(0, 10) },
+        message: 'Completed the Tableau fundamentals track.',
+        proof: '/demo/proofs/certificate.svg',
+        status: 'pending',
+        feedback: '',
+        creation_date: daysAgo(5),
+      },
+      {
+        v_id: 2004,
+        s_id: 'scs0002',
+        category: 'result',
+        body: { name: 'semester 4', r_no: 'cs22-0118', score: '9.3 cgpa', description: 'Semester 4 result declared.', date: daysAgo(30).slice(0, 10) },
+        message: 'Semester 4 marksheet attached.',
+        proof: '/demo/proofs/marksheet.svg',
+        status: 'rejected',
+        feedback: 'The uploaded marksheet is a provisional copy. Please re-submit once the sealed result is issued.',
+        creation_date: daysAgo(26),
+      },
+      {
+        v_id: 2005,
+        s_id: 'sce0003',
+        category: 'internship',
+        body: { company: 'siemens india', field: 'industrial automation', duration: 2, name: 'siemens india', description: 'Winter internship on PLC ladder logic.', date: daysAgo(45).slice(0, 10) },
+        message: 'Winter internship on PLC ladder logic.',
+        proof: '/demo/proofs/internship.svg',
+        status: 'pending',
+        feedback: '',
+        creation_date: daysAgo(7),
+      },
+      {
+        v_id: 2006,
+        s_id: 'see0005',
+        category: 'certificate',
+        body: { name: 'iso 50001 energy management awareness', c_id: 'iso-em-3391', description: 'Two-day workshop certification.', date: daysAgo(15).slice(0, 10) },
+        message: 'Two-day workshop conducted by the state energy board.',
+        proof: '/demo/proofs/certificate.svg',
+        status: 'accepted',
+        feedback: 'Confirmed with the workshop coordinator.',
+        creation_date: daysAgo(14),
+      },
+      {
+        v_id: 2007,
+        s_id: 'sme0008',
+        category: 'project',
+        body: { name: 'go-kart chassis redesign', description: 'Reduced chassis mass by 11% while holding torsional stiffness, validated in ANSYS.', technology: ['solidworks', 'ansys'], link: '', date: daysAgo(22).slice(0, 10) },
+        message: 'Entry for the national go-kart championship.',
+        proof: '/demo/proofs/project.svg',
+        status: 'pending',
+        feedback: '',
+        creation_date: daysAgo(2),
+      },
+      {
+        v_id: 2008,
+        s_id: 'sme0004',
+        category: 'skills',
+        body: { name: 'fusion 360', topics: ['parametric modelling'], description: 'Self-paced CAD course.', date: daysAgo(8).slice(0, 10) },
+        message: 'Self-paced CAD course on Autodesk Fusion 360.',
+        proof: '/demo/proofs/certificate.svg',
+        status: 'pending',
+        feedback: '',
+        creation_date: daysAgo(1),
+      },
+    ],
+
+    notices: [
+      {
+        n_id: 3001,
+        category: 'exam',
+        for: ['student'],
+        subject: 'Mid-semester examination timetable released',
+        body: 'The mid-semester examination timetable for all branches is now available on the notice board and the student portal.\n\nExams begin on the first Monday of next month. Hall tickets must be collected from the examination cell at least three days in advance. Students with pending fee dues will not be issued a hall ticket.',
+        issue_date: daysAgo(4),
+        expire_date: daysAhead(21),
+      },
+      {
+        n_id: 3002,
+        category: 'internship',
+        for: [['3yr', '4yr'], ['cs', 'ce'], 'skilled'],
+        subject: 'Summer internship drive - Zeta Infotech',
+        body: 'Zeta Infotech is conducting a summer internship drive for pre-final and final year CS/CE students.\n\nStipend: Rs. 25,000 per month for 3 months.\nEligibility: 7.5 CGPA and above, no active backlogs.\n\nRegister through the placement cell before the end of this week. Shortlisted candidates will be notified by email.',
+        issue_date: daysAgo(2),
+        expire_date: daysAhead(9),
+      },
+      {
+        n_id: 3003,
+        category: 'event',
+        for: ['student'],
+        subject: 'Annual technical festival - Prayog 2026',
+        body: 'Prayog, the annual inter-college technical festival, will be held over three days at the main campus.\n\nEvents include a 24-hour hackathon, robotics arena, paper presentation and a project expo. Registrations are open for all years and branches. Teams of up to four members may register per event.',
+        issue_date: daysAgo(6),
+        expire_date: daysAhead(30),
+      },
+      {
+        n_id: 3004,
+        category: 'update',
+        for: ['student'],
+        subject: 'Portfolio verification requests - turnaround time',
+        body: 'Verification requests submitted through the portal are now reviewed within three working days.\n\nPlease ensure the proof document you attach is legible and clearly shows your name and the issuing body. Requests with unreadable proof will be rejected with feedback rather than held in the queue.',
+        issue_date: daysAgo(10),
+        expire_date: daysAhead(45),
+      },
+      {
+        n_id: 3005,
+        category: 'job',
+        for: [['4yr'], ['cs', 'ce', 'me', 'ee'], 'none'],
+        subject: 'Campus placement - Tata Motors graduate engineer trainee',
+        body: 'Tata Motors will visit the campus for graduate engineer trainee recruitment across all four branches.\n\nCTC: Rs. 8.5 LPA.\nProcess: online aptitude test, technical interview, HR round.\n\nFinal year students should upload an updated portfolio PDF to the placement cell before the pre-placement talk.',
+        issue_date: daysAgo(1),
+        expire_date: daysAhead(12),
+      },
+      {
+        n_id: 3006,
+        category: 'general',
+        for: ['scs0001', 'see0005'],
+        subject: 'Selected for the departmental research assistantship',
+        body: 'Congratulations. You have been shortlisted for the departmental research assistantship for the coming semester.\n\nPlease meet the head of department this week to confirm your acceptance and collect the assistantship terms. Bring a printed copy of your portfolio.',
+        issue_date: daysAgo(3),
+        expire_date: daysAhead(10),
+      },
+      {
+        n_id: 3007,
+        category: 'project',
+        for: [['2yr', '3yr'], ['cs'], 'none'],
+        subject: 'Mini project topic submission deadline',
+        body: 'Second and third year Computer Science students must submit their mini project topic along with a one-page abstract to their assigned guide.\n\nTopics that duplicate a previous year submission will be returned for revision. A list of last year accepted topics is available with the department office.',
+        issue_date: daysAgo(5),
+        expire_date: daysAhead(6),
+      },
+    ],
+
+    logs: [
+      { l_id: 4001, by: 'teacher', s_id: 'scs0001', type: 'register', time: daysAgo(120), detail: { message: 'Teacher register a student', data: { s_id: 'scs0001', name: 'Aarav Sharma', username: 'scs0001' } } },
+      { l_id: 4002, by: 'student', s_id: 'scs0001', type: 'setup',    time: daysAgo(118), detail: { message: 'Student setup his record' } },
+      { l_id: 4003, by: 'teacher', s_id: 'scs0002', type: 'register', time: daysAgo(115), detail: { message: 'Teacher register a student', data: { s_id: 'scs0002', name: 'Diya Patel', username: 'scs0002' } } },
+      { l_id: 4004, by: 'student', s_id: 'scs0002', type: 'setup',    time: daysAgo(112), detail: { message: 'Student setup his record' } },
+      { l_id: 4005, by: 'student', s_id: 'scs0001', type: 'request',  time: daysAgo(18),  detail: { message: 'Student upload a request', req: { v_id: 2002, category: 'project' } } },
+      { l_id: 4006, by: 'teacher', s_id: 'scs0001', type: 'request',  time: daysAgo(17),  detail: { message: 'Teacher accepted student request', request: { v_id: 2002, category: 'project' } } },
+      { l_id: 4007, by: 'teacher', s_id: null,      type: 'notice',   time: daysAgo(10),  detail: { message: 'Teacher creates a new notice', data: { n_id: 3004, subject: 'Portfolio verification requests - turnaround time' } } },
+      { l_id: 4008, by: 'student', s_id: 'scs0002', type: 'request',  time: daysAgo(26),  detail: { message: 'Student upload a request', req: { v_id: 2004, category: 'result' } } },
+      { l_id: 4009, by: 'teacher', s_id: 'scs0002', type: 'request',  time: daysAgo(24),  detail: { message: 'Teacher rejected student request', request: { v_id: 2004, category: 'result' } } },
+      { l_id: 4010, by: 'student', s_id: 'see0005', type: 'request',  time: daysAgo(14),  detail: { message: 'Student upload a request', req: { v_id: 2006, category: 'certificate' } } },
+      { l_id: 4011, by: 'teacher', s_id: 'see0005', type: 'request',  time: daysAgo(13),  detail: { message: 'Teacher accepted student request', request: { v_id: 2006, category: 'certificate' } } },
+      { l_id: 4012, by: 'teacher', s_id: 'scs0006', type: 'register', time: daysAgo(30),  detail: { message: 'Teacher register a student', data: { s_id: 'scs0006', name: 'Meera Krishnan', username: 'scs0006' } } },
+      { l_id: 4013, by: 'teacher', s_id: 'sce0007', type: 'register', time: daysAgo(28),  detail: { message: 'Teacher register a student', data: { s_id: 'sce0007', name: 'Vivaan Reddy', username: 'sce0007' } } },
+      { l_id: 4014, by: 'student', s_id: 'sme0008', type: 'request',  time: daysAgo(2),   detail: { message: 'Student upload a request', req: { v_id: 2007, category: 'project' } } },
+      { l_id: 4015, by: 'teacher', s_id: null,      type: 'notice',   time: daysAgo(1),   detail: { message: 'Teacher creates a new notice', data: { n_id: 3005, subject: 'Campus placement - Tata Motors graduate engineer trainee' } } },
+    ],
+
+    // Mirrors counterModel.js -- next auto-increment id per collection.
+    counters: { v_id: 2009, n_id: 3008, l_id: 4016 },
+  };
+}

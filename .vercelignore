@@ -1,0 +1,8 @@
+# Only the Vite app in Frontend/ is deployed.
+SPAM_Backend
+docs
+.venv
+node_modules
+**/node_modules
+*.md
+!Frontend/**
